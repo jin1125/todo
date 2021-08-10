@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { Edit } from "./components/Edit";
+import { Header } from "./components/Header";
+import { Main } from "./Main";
 
 export const App = () => {
   const state = JSON.parse(localStorage.getItem("todos"));
@@ -223,7 +226,15 @@ export const App = () => {
   };
 
   const editButton = () => {
-    if (editId > incomplete.length || editId <= 0) {
+    console.log(incomplete);
+    const num = incomplete.map((todo)=>{
+      return todo.id
+    });
+
+    console.log(typeof(editId));
+
+    // if (editId > incomplete.length || editId <= 0) {
+    if (!num.includes(parseInt(editId))) {
       window.alert("入力したIDのリストはありません");
       return;
     }
@@ -254,164 +265,44 @@ export const App = () => {
   //描画エリア
   return (
     <>
-      <div>
-        <label htmlFor="todo">タスク入力</label>
-        <br />
-        <input
-          type="text"
-          id="todo"
-          name="todo"
-          value={todos}
-          onChange={inputTodos}
-        />
-      </div>
+      <Header
+        todos={todos}
+        inputTodos={inputTodos}
+        detail={detail}
+        inputDetail={inputDetail}
+        deadline={deadline}
+        inputDeadline={inputDeadline}
+        inputButton={inputButton}
+        check={check}
+        allDeleteButton={allDeleteButton}
+        incomplete={incomplete}
+        desc={desc}
+        asc={asc}
+        idFilter={idFilter}
+        statusFilter1={statusFilter1}
+        statusFilter2={statusFilter2}
+      />
 
-      <div>
-        <label htmlFor="detail">詳細</label>
-        <br />
-        <textarea
-          id="detail"
-          name="detail"
-          value={detail}
-          onChange={inputDetail}
-        />
-      </div>
+      <Main
+      incomplete={incomplete}
+      deleteButton={deleteButton}
+      statusButton={statusButton}
+      inputComment={inputComment}
+      commentButton={commentButton}
+      />
 
-      <div>
-        <label htmlFor="deadline">期日</label>
-        <br />
-        <input
-          type="date"
-          id="deadline"
-          name="deadline"
-          value={deadline}
-          onChange={inputDeadline}
-        />
-      </div>
-
-      <div>
-        <button onClick={inputButton} disabled={check}>
-          タスク追加
-        </button>
-        <button onClick={allDeleteButton} disabled={incomplete.length === 0}>
-          全タスク削除
-        </button>
-
-        <select
-          id="sort"
-          onChange={() => {
-            const sort = document.getElementById("sort");
-            if (sort.value === "desc") {
-              desc();
-            } else if (sort.value === "asc") {
-              asc();
-            }
-          }}
-          disabled={incomplete.length === 0}
-        >
-          <option>ソート</option>
-          <option value="desc">ID降順</option>
-          <option value="asc">ID昇順</option>
-        </select>
-
-        <button onClick={idFilter} disabled={incomplete.length === 0}>
-          ID3までを表示
-        </button>
-
-        <button onClick={statusFilter1} disabled={incomplete.length === 0}>
-          未完了のみ表示
-        </button>
-        <button onClick={statusFilter2} disabled={incomplete.length === 0}>
-          完了のみ表示
-        </button>
-      </div>
-
-      <div id="todos">
-        {incomplete.map((todo, index) => (
-          <div key={index} id="tl">
-            <ul>
-              <li>{`ID : ${todo.id}`}</li>
-              <li>{`作成日 : ${todo.date}`}</li>
-              <li id="st">{`ステータス : ${todo.status}`}</li>
-              <li>{`タスク : ${todo.todos}`}</li>
-              <li>{`詳細 : ${todo.detail}`}</li>
-              <li>{`期日 : ${todo.deadline}`}</li>
-
-              <div>
-                <button onClick={() => deleteButton(todo, index)}>削除</button>
-                <button onClick={() => statusButton(index)}>
-                  {todo.status === "完了" ? "未完了" : "完了"}
-                </button>
-                <div>
-                  <label htmlFor={`comment${todo.id}`}>コメント</label>
-                  <input
-                    type="text"
-                    id={`comment${todo.id}`}
-                    name={`comment${todo.id}`}
-                    onChange={inputComment}
-                  />
-                  <button onClick={() => commentButton(index)}>追加</button>
-                  <p>{todo.comment}</p>
-                </div>
-              </div>
-            </ul>
-          </div>
-        ))}
-      </div>
-
-      <h4>タスク編集</h4>
-
-      {/* 編集機能 */}
-      <div>
-        <label htmlFor="editId">ID</label>
-        <br />
-        <input
-          type="number"
-          id="editId"
-          name="editId"
-          value={editId}
-          onChange={inputEditId}
-        />
-      </div>
-
-      <div>
-        <label htmlFor="editTodo">タスク</label>
-        <br />
-        <input
-          type="text"
-          id="editTodo"
-          name="editTodo"
-          value={editTodo}
-          onChange={inputEditTodo}
-        />
-      </div>
-
-      <div>
-        <label htmlFor="editDetail">詳細</label>
-        <br />
-        <textarea
-          id="editDetail"
-          name="editDetail"
-          value={editDetail}
-          onChange={inputEditDetail}
-        />
-      </div>
-
-      <div>
-        <label htmlFor="editDeadline">期日</label>
-        <br />
-        <input
-          type="date"
-          id="deadline"
-          name="editDeadline"
-          value={editDeadline}
-          onChange={inputEditDeadline}
-        />
-      </div>
-
-      <button onClick={editButton} disabled={check2}>
-        タスク編集
-      </button>
+      <Edit
+      editId={editId}
+      inputEditId={inputEditId}
+      editTodo={editTodo}
+      inputEditTodo={inputEditTodo}
+      editDetail={editDetail}
+      inputEditDetail={inputEditDetail}
+      editDeadline={editDeadline}
+      inputEditDeadline={inputEditDeadline}
+      editButton={editButton}
+      check2={check2}
+      />
     </>
   );
 };
