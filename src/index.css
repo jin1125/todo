@@ -1,0 +1,16 @@
+div{
+  text-align: center;
+}
+
+ul{
+  text-align: left;
+  display: inline-block;
+  list-style: none;
+  background-color: #BAE2FF;
+  padding: 20px;
+  margin:30px 10px;
+}
+
+#todo{
+  display: inline-block;
+}
