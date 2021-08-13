@@ -39,3 +39,8 @@ button:active{
 .bgyellow{
   background-color: #FAEE6B;
 }
+
+
+button:disabled{
+  opacity: 0.6;
+}
