@@ -3,20 +3,93 @@ import React from "react";
 export const Header = (props) => {
   const {
     todos,
-    inputTodos,
     detail,
-    inputDetail,
     deadline,
-    inputDeadline,
-    inputButton,
-    check,
-    allDeleteButton,
     incomplete,
-    desc,
-    asc,
     setFilter,
+    setDetail,
+    setDeadline,
+    setIncomplete,
+    setTodos,
+    id,
+    status,
+    date,
+    comment,
   } = props;
 
+  //詳細インプット
+  const inputDetail = (e) => {
+    setDetail(e.target.value);
+  };
+
+  //期日インプット
+  const inputDeadline = (e) => {
+    setDeadline(e.target.value);
+  };
+
+  const data = {
+    id: id,
+    todos: todos,
+    deadline: deadline,
+    status: status,
+    date: date,
+    detail: detail,
+    comment: comment,
+  };
+
+  //タスク追加ボタン
+  const inputButton = () => {
+    setIncomplete([...incomplete, data]);
+    setTodos("");
+    setDetail("");
+    setDeadline("");
+  };
+
+  const allDeleteButton = () => {
+    const result = window.confirm("全てのタスクを消しますか？");
+    if (result) {
+      setIncomplete([]);
+    }
+  };
+
+  //ID降順ソート
+  const desc = () => {
+    incomplete.sort((a, b) => {
+      if (a.id < b.id) {
+        return 1;
+      }
+      if (a.id > b.id) {
+        return -1;
+      }
+      return 0;
+    });
+
+    setIncomplete([...incomplete]);
+  };
+
+  //ID昇順ソート
+  const asc = () => {
+    incomplete.sort((a, b) => {
+      if (a.id < b.id) {
+        return -1;
+      }
+      if (a.id > b.id) {
+        return 1;
+      }
+      return 0;
+    });
+
+    setIncomplete([...incomplete]);
+  };
+
+  const check = todos === "" || detail === "" || deadline === "";
+
+  //タスク名入力欄インプット
+  const inputTodos = (e) => {
+    setTodos(e.target.value);
+  };
+
+  /////////////////////////////描画エリア/////////////////////////////
   return (
     <>
       <div>

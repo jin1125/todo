@@ -1,17 +1,67 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export const Main = (props) => {
-  const {
-    incomplete,
-    deleteButton,
-    statusButton,
-    inputComment,
-    commentButton,
-    filter,
-    idOnly,
-    completeLists,
-    incompleteLists,
-  } = props;
+  const { incomplete, filter, setIncomplete, comment, setComment } = props;
+
+  const [idOnly, setIdOnly] = useState([]);
+  const [incompleteLists, setIncompleteLists] = useState([]);
+  const [completeLists, setCompleteLists] = useState([]);
+
+  const commentButton = (index) => {
+    const get = incomplete.splice(index, 1)[0];
+    const get2 = { ...get, comment: comment };
+    incomplete.splice(index, 0, get2);
+    setIncomplete([...incomplete]);
+  };
+
+  // ステータスの切り替え
+  const statusButton = (index) => {
+    if (incomplete[index].status === "未完了") {
+      let target = incomplete[index];
+      target.status = "完了";
+
+      const newTodos = [...incomplete];
+      newTodos.splice(index, 1, target);
+      setIncomplete(newTodos);
+    } else if (incomplete[index].status === "完了") {
+      let target = incomplete[index];
+      target.status = "未完了";
+
+      const newTodos = [...incomplete];
+      newTodos.splice(index, 1, target);
+      setIncomplete(newTodos);
+    }
+  };
+
+  //numフィルター
+  useEffect(() => {
+    const filterLists = [...incomplete];
+    const num3 = filterLists.slice(0, 3);
+
+    setIdOnly([...num3]);
+  }, [incomplete]);
+
+  //未完了フィルター
+  useEffect(() => {
+    const filterLists = [...incomplete];
+
+    const incomp = filterLists.filter(
+      (filterList) => filterList.status === "未完了"
+    );
+
+    setIncompleteLists([...incomp]);
+  }, [incomplete]);
+
+  //完了フィルター
+  useEffect(() => {
+    const filterLists = [...incomplete];
+
+    const incomp = filterLists.filter(
+      (filterList) => filterList.status === "完了"
+    );
+
+    setCompleteLists([...incomp]);
+  }, [incomplete]);
 
   let lists = [];
 
@@ -34,6 +84,30 @@ export const Main = (props) => {
       lists = incomplete;
   }
 
+  const deleteButton = (todo, index) => {
+    const result = window.confirm(`ID : ${todo.id} のタスクを消しますか？`);
+    if (result) {
+      incomplete.splice(index, 1);
+      setIncomplete([...incomplete]);
+    }
+  };
+
+  const inputComment = (e) => {
+    setComment(e.target.value);
+  };
+
+  useEffect(() => {
+    const st = document.querySelectorAll("#st");
+    for (let i = 0; i < st.length; i++) {
+      if (st[i].textContent === "ステータス : 未完了") {
+        st[i].parentElement.classList.add("bgyellow");
+      } else {
+        st[i].parentElement.classList.remove("bgyellow");
+      }
+    }
+  });
+
+  /////////////////////////////描画エリア/////////////////////////////
   return (
     <>
       <div id="todos">

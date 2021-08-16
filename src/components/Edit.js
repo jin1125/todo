@@ -1,18 +1,69 @@
-import React from "react";
+import React, { useState } from "react";
 
 export const Edit = (props) => {
-  const {
-    editId,
-    inputEditId,
-    editTodo,
-    inputEditTodo,
-    editDetail,
-    inputEditDetail,
-    editDeadline,
-    inputEditDeadline,
-    editButton,
-    check2,
-  } = props;
+  const { incomplete, setIncomplete } = props;
+
+  const [editTodo, setEditTodo] = useState("");
+  const [editDetail, setEditDetail] = useState("");
+  const [editDeadline, setEditDeadline] = useState("");
+  const [editId, setEditId] = useState(0);
+
+  //編集IDインプット
+  const inputEditId = (e) => {
+    setEditId(e.target.value);
+  };
+
+  //編集タスク名入力欄インプット
+  const inputEditTodo = (e) => {
+    setEditTodo(e.target.value);
+  };
+
+  //編集詳細インプット
+  const inputEditDetail = (e) => {
+    setEditDetail(e.target.value);
+  };
+
+  //編集期日インプット
+  const inputEditDeadline = (e) => {
+    setEditDeadline(e.target.value);
+  };
+
+  const editButton = () => {
+    const num = incomplete.map((todo) => {
+      return todo.id;
+    });
+
+    if (!num.includes(parseInt(editId))) {
+      window.alert("入力したIDのリストはありません");
+      return;
+    }
+
+    const get1 = incomplete.map((todo) => {
+      // eslint-disable-next-line eqeqeq
+      if (todo.id == editId) {
+        const edit = {
+          ...todo,
+          todos: editTodo,
+          detail: editDetail,
+          deadline: editDeadline,
+        };
+        setEditId("");
+        setEditTodo("");
+        setEditDetail("");
+        setEditDeadline("");
+
+        return edit;
+      } else {
+        return todo;
+      }
+    });
+
+    setIncomplete([...get1]);
+  };
+
+  const check2 = editTodo === "" || editDetail === "" || editDeadline === "";
+
+  /////////////////////////////描画エリア/////////////////////////////
   return (
     <>
       <h4>タスク編集</h4>
