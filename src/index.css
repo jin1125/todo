@@ -40,6 +40,9 @@ button:active{
   background-color: #FAEE6B;
 }
 
+select{
+  margin: 0 10px;
+}
 
 button:disabled{
   opacity: 0.6;

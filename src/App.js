@@ -14,6 +14,11 @@ export const App = () => {
   const [deadline, setDeadline] = useState("");
   const [editDeadline, setEditDeadline] = useState("");
   const [editId, setEditId] = useState(0);
+  const [filter,setFilter] = useState([]);
+  // const [all,setAll] = useState([]);
+  const [idOnly,setIdOnly] = useState([]);
+  const [incompleteLists,setIncompleteLists] = useState([]);
+  const [completeLists,setCompleteLists] = useState([]);
   const [incomplete, setIncomplete] = useState(
     state
       ? state
@@ -139,35 +144,73 @@ export const App = () => {
     }
   };
 
+  ///////////////////////////フィルター///////////////////////////////
+  // useEffect(()=>{
+  //   setAll([...incomplete])
+  // },[incomplete])
+
   //idフィルター
-  const idFilter = () => {
-    const filterLists = [...incomplete];
+  // const idFilter = () => {
+    //   const filterLists = [...incomplete];
+    //   const num3 = filterLists.filter((filterList) => filterList.id <= 3);
+    //   setIncomplete([...num3]);
 
-    const num3 = filterLists.filter((filterList) => filterList.id <= 3);
 
-    setIncomplete([...num3]);
-  };
+    //ステータスフィルター
+    // const statusFilter1 = () => {
+    //   const filterLists = [...incomplete];
+    //   const incomp = filterLists.filter(
+    //     (filterList) => filterList.status === "未完了"
+    //   );
+    //   setIncomplete([...incomp]);
+    // };
 
-  //ステータスフィルター(useStateを分けないと不可能？)
-  const statusFilter1 = () => {
+    // const statusFilter2 = () => {
+    //   const filterLists = [...incomplete];
+  
+    //   const incomp = filterLists.filter(
+    //     (filterList) => filterList.status === "完了"
+    //   );
+  
+    //   setIncomplete([...incomp]);
+    // };
+
+
+    //numフィルター
+  useEffect(()=>{
+      const filterLists = [...incomplete];
+      const num3 = filterLists.slice(0,3);
+  
+      setIdOnly([...num3]);
+
+    },[incomplete])
+
+
+    //未完了フィルター
+  useEffect(()=>{
     const filterLists = [...incomplete];
 
     const incomp = filterLists.filter(
       (filterList) => filterList.status === "未完了"
     );
 
-    setIncomplete([...incomp]);
-  };
+    setIncompleteLists([...incomp]);
 
-  const statusFilter2 = () => {
+    },[incomplete])
+
+
+    //完了フィルター
+  useEffect(()=>{
     const filterLists = [...incomplete];
-
+  
     const incomp = filterLists.filter(
       (filterList) => filterList.status === "完了"
     );
 
-    setIncomplete([...incomp]);
-  };
+    setCompleteLists([...incomp]);
+
+    },[incomplete])
+
 
   //ID降順ソート
   const desc = () => {
@@ -204,7 +247,6 @@ export const App = () => {
 
   useEffect(() => {
     const st = document.querySelectorAll("#st");
-    //  console.log(st);
     for (let i = 0; i < st.length; i++) {
       if (st[i].textContent === "ステータス : 未完了") {
         st[i].parentElement.classList.add("bgyellow");
@@ -226,14 +268,10 @@ export const App = () => {
   };
 
   const editButton = () => {
-    console.log(incomplete);
     const num = incomplete.map((todo)=>{
       return todo.id
     });
 
-    console.log(typeof(editId));
-
-    // if (editId > incomplete.length || editId <= 0) {
     if (!num.includes(parseInt(editId))) {
       window.alert("入力したIDのリストはありません");
       return;
@@ -278,9 +316,8 @@ export const App = () => {
         incomplete={incomplete}
         desc={desc}
         asc={asc}
-        idFilter={idFilter}
-        statusFilter1={statusFilter1}
-        statusFilter2={statusFilter2}
+        idOnly={idOnly}
+        setFilter={setFilter}
       />
 
       <Main
@@ -289,6 +326,11 @@ export const App = () => {
       statusButton={statusButton}
       inputComment={inputComment}
       commentButton={commentButton}
+      filter={filter}
+      // all={all}
+      idOnly={idOnly}
+      completeLists={completeLists}
+      incompleteLists={incompleteLists}
       />
 
       <Edit

@@ -1,7 +1,18 @@
-import React from 'react'
+import React from "react";
 
 export const Edit = (props) => {
-  const {editId,inputEditId,editTodo,inputEditTodo,editDetail,inputEditDetail,editDeadline,inputEditDeadline,editButton,check2} = props;
+  const {
+    editId,
+    inputEditId,
+    editTodo,
+    inputEditTodo,
+    editDetail,
+    inputEditDetail,
+    editDeadline,
+    inputEditDeadline,
+    editButton,
+    check2,
+  } = props;
   return (
     <>
       <h4>タスク編集</h4>
@@ -56,5 +67,5 @@ export const Edit = (props) => {
         タスク編集
       </button>
     </>
-  )
-}
+  );
+};

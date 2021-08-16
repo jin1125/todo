@@ -14,9 +14,7 @@ export const Header = (props) => {
     incomplete,
     desc,
     asc,
-    idFilter,
-    statusFilter1,
-    statusFilter2,
+    setFilter,
   } = props;
 
   return (
@@ -81,16 +79,14 @@ export const Header = (props) => {
           <option value="asc">ID昇順</option>
         </select>
 
-        <button onClick={idFilter} disabled={incomplete.length === 0}>
-          ID3までを表示
-        </button>
+        {/* ---------------------- フィルター ---------------------- */}
 
-        <button onClick={statusFilter1} disabled={incomplete.length === 0}>
-          未完了のみ表示
-        </button>
-        <button onClick={statusFilter2} disabled={incomplete.length === 0}>
-          完了のみ表示
-        </button>
+        <select defaultValue="all" onChange={(e) => setFilter(e.target.value)}>
+          <option value="all">全て表示</option>
+          <option value="num3">3つ表示</option>
+          <option value="imcomplete">未完了のみ表示</option>
+          <option value="complete">完了のみ表示</option>
+        </select>
       </div>
     </>
   );

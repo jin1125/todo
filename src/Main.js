@@ -7,11 +7,37 @@ export const Main = (props) => {
     statusButton,
     inputComment,
     commentButton,
+    filter,
+    idOnly,
+    completeLists,
+    incompleteLists,
   } = props;
+
+  let lists = [];
+
+  switch (filter) {
+    case "all":
+      lists = incomplete;
+      break;
+    case "num3":
+      lists = idOnly;
+      break;
+    case "imcomplete":
+      console.log("imcomplete");
+      lists = incompleteLists;
+      break;
+    case "complete":
+      console.log("complete");
+      lists = completeLists;
+      break;
+    default:
+      lists = incomplete;
+  }
+
   return (
     <>
       <div id="todos">
-        {incomplete.map((todo, index) => (
+        {lists.map((todo, index) => (
           <div key={index} id="tl">
             <ul>
               <li>{`ID : ${todo.id}`}</li>
